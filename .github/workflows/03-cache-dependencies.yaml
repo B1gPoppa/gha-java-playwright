@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-verssion: 21
+          java-verssion: '21'
           cache: maven
 
       - name: Restore Maven dependencies cache
