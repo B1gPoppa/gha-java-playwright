@@ -1,0 +1,41 @@
+name: Upload Playwright Reports
+
+on: push
+
+jobs:
+  tests:
+    name: Upload Playwright Reports
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Java
+        uses: actions/checkout@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      - name: Restore Maven dependencies cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: | 
+            ${{ runner.os }}-maven-
+
+      - name: Build & Install
+        run: mvn exec:java -e -D skipsTest --no-transfer-progress
+
+      - name: Install Playwright Browsers
+        run: mvn exec:java -e -D skipTest --no-transfer-progress
+
+      - name: Upload Test Reports
+        uses: actions/upload-artifacts@v4
+        with:
+          name: test-artifacts
+          path: |
+            target/reports # Directory containing PLaywright reports.
+            target/surefire-reports # Directory containing Maven's Surefire test reports.
