@@ -1,3 +1,5 @@
+# Exercise 2: Run Playwright Tests in CI/CD
+
 name: Run Playwright Tests
 
 on: push
